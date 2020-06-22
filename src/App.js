@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "fontsource-roboto";
+import "./App.css";
+import Translator from "containers/Translator/Translator";
+import { translate } from "utils/translate";
 
 function App() {
+  const sourceLang = "pl";
+  const targetLang = "en";
+  const sourceText = "Witaj świecie";
+
+  const getTranslation = async () => {
+    const translatedText = await translate(sourceText, sourceLang, targetLang);
+    console.log(translatedText);
+  };
+
+  // getTranslation();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Translator></Translator>
     </div>
   );
 }
