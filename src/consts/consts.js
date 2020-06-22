@@ -4,79 +4,83 @@ export const defaultFileType = ".php";
 
 export const defaultSource = "pl";
 
+export const defaultCopySource = "en";
+
 export const defaultActions = ["INSERT", "UPDATE"];
+
+export const langSettings = ["input", "auto", "copy"];
 
 export const defaultLanguages = [
   {
     name: "polish",
     code: "pl",
     key: 1,
-    autoTranslate: false,
+    setting: "input"   
   },
   {
     name: "english",
     code: "en",
     key: 9,
-    autoTranslate: true,
+    setting: "auto"   
   },
-  // {
-  //   name: "espanol",
-  //   code: "es",
-  //   key: 11,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "french",
-  //   code: "fr",
-  //   key: 12,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "german",
-  //   code: "de",
-  //   key: 10,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "norwegian",
-  //   code: "no",
-  //   key: 14,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "russian",
-  //   code: "ru",
-  //   key: 13,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "swedish",
-  //   code: "sv",
-  //   key: 15,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "czech",
-  //   code: "cs",
-  //   key: 16,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "slovak",
-  //   code: "sk",
-  //   key: 17,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "italian",
-  //   code: "it",
-  //   key: 18,
-  //   autoTranslate: true,
-  // },
-  // {
-  //   name: "hungarian",
-  //   code: "hus",
-  //   key: 19,
-  //   autoTranslate: true,
-  // },
+  {
+    name: "espanol",
+    code: "es",
+    key: 11,
+    setting: "auto"   
+  },
+  {
+    name: "french",
+    code: "fr",
+    key: 12,
+    setting: "copy"   
+  },
+  {
+    name: "german",
+    code: "de",
+    key: 10,
+    setting: "copy"   
+  },
+  {
+    name: "norwegian",
+    code: "no",
+    key: 14,
+    setting: "copy"   
+  },
+  {
+    name: "russian",
+    code: "ru",
+    key: 13,
+    setting: "copy"   
+  },
+  {
+    name: "swedish",
+    code: "sv",
+    key: 15,
+    setting: "copy"   
+  },
+  {
+    name: "czech",
+    code: "cs",
+    key: 16,
+    setting: "copy"   
+  },
+  {
+    name: "slovak",
+    code: "sk",
+    key: 17,
+    setting: "copy"   
+  },
+  {
+    name: "italian",
+    code: "it",
+    key: 18,
+    setting: "copy"   
+  },
+  {
+    name: "hungarian",
+    code: "hus",
+    key: 19,
+    setting: "copy"   
+  },
 ];

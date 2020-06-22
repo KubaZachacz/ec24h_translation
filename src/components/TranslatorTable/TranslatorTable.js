@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const TranslatorTable = ({
   source,
   languages,
-  onLanguageChange,
+  onSettingChange,
   translations,
 }) => {
   const classes = useStyles();
@@ -28,11 +28,11 @@ const TranslatorTable = ({
 
   const translationsRows = translations.map(
     ({ action, key, translationData }) => (
-      <TableRow key={key}>
+      <TableRow key={`row-${key}`}>
         <TableCell>{action}</TableCell>
         <TableCell>{key}</TableCell>
-        {translationData.map(({ text }) => (
-          <TableCell key={`${key}-${text}`}>{text}</TableCell>
+        {translationData.map(({ text, code }) => (
+          <TableCell key={`${key}-${code}`}>{text}</TableCell>
         ))}
       </TableRow>
     )
@@ -49,7 +49,7 @@ const TranslatorTable = ({
   return (
     <div className={classes.root}>
       <Table>
-        <TableHead {...{ source, languages, onLanguageChange }}></TableHead>
+        <TableHead {...{ source, languages, onSettingChange }}></TableHead>
         <TableBody>
           {translations.length === 0 ? noData : translationsRows}
         </TableBody>

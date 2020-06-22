@@ -7,12 +7,14 @@ import {
   fileType,
   defaultFileType,
   defaultActions,
+  defaultCopySource,
 } from "consts/consts";
 import TranslatorTable from "components/TranslatorTable/TranslatorTable";
 import TranslatorOptions from "components/TranslatorOptions/TranslatorOptions";
 import TranslatorActions from "components/TranslatorActions/TranslatorActions";
 import TranslatorModal from "components/TranslatorModal/TranslatorModal";
 import { translate } from "utils/translate";
+import { formatQuery } from "utils/formatQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,19 +33,22 @@ const Translator = (props) => {
 
   const [fileType, setFileType] = useState(defaultFileType);
   const [source, setSource] = useState(defaultSource);
+  const [copySource, setCopySource] = useState(defaultCopySource);
   const [languages, setLanguages] = useState(defaultLanguages);
   const [translations, setTranslations] = useState([]);
 
   const [modalData, setModalData] = useState(defaultModalData);
   const [isModal, setIsModal] = useState(false);
 
-  const onLanguageChange = (key, property, value) => {
+  const [output, setOutput] = useState("");
+
+  const onSettingChange = (key, value) => {
     const newLanguages = [...languages];
     const langId = languages.findIndex((el) => el.key === key);
 
     newLanguages[langId] = {
       ...languages[langId],
-      [property]: value,
+      setting: value,
     };
 
     setLanguages(newLanguages);
@@ -51,14 +56,18 @@ const Translator = (props) => {
 
   const onSourceChange = (code) => {
     const lang = languages.find((el) => el.code === code);
-    console.log(code, lang);
-    onLanguageChange(lang.key, "autoTranslate", false);
+
+    onSettingChange(lang.key, "input");
     setSource(code);
+  };
+
+  const onCopySourceChange = (code) => {
+    setCopySource(code);
   };
 
   const onOpenModal = () => {
     const inputLanguages = languages.filter(
-      ({ autoTranslate }) => !autoTranslate
+      ({ setting }) => setting === "input"
     );
 
     const translationData = inputLanguages.map((lang) => {
@@ -83,26 +92,41 @@ const Translator = (props) => {
     const src = modalTranslationData.find(({ code }) => code === source);
     const srcText = src.text;
 
-    console.log(srcText);
-
-    const translationData = languages.map(async (lang) => {
+    const pendingTranslationData = languages.map(async (lang) => {
       const langModalData = modalTranslationData.find((item) => {
-        console.log(lang, item);
+
         return item.key === lang.key;
       });
 
       let text = "";
       if (!!langModalData) {
         text = langModalData.text;
-      } else {
+      } else if (lang.setting === "auto"){
         text = await translate(srcText, source, lang.code);
+      } else if (lang.setting === "copy"){
+        text = "--copy-text--";
       }
-
+      
       return {
         ...lang,
         text,
       };
     });
+
+    const rawTranslationData = await Promise.all(pendingTranslationData);
+
+    const copySourceTxt = rawTranslationData.find(({code}) => code === copySource).text;
+    
+    const translationData = rawTranslationData.map(lang => {
+      let {text} = lang;
+      if(text === "--copy-text--") {
+        text = copySourceTxt;
+      }
+      return ({
+        ...lang,
+        text
+      })
+    })
 
     setTranslations([
       ...translations,
@@ -115,21 +139,38 @@ const Translator = (props) => {
 
   const onEditTranslation = () => {};
 
+  const onExport = () => {
+    let output = ""
+    for (let trans of translations) {
+      const {action, key, translationData} = trans;
+      for (let lang of translationData) {
+        output = output + "\n" + formatQuery(action, lang.key, lang.name, fileType, key, lang.text);
+      }
+    }
+
+    setOutput(output);
+  }
+
   return (
     <div className={classes.root}>
       <TranslatorOptions
         {...{
           languages: defaultLanguages,
           source,
-          setSource: onSourceChange,
+          onSourceChange,
+          copySource,
+          onCopySourceChange,
           fileType,
           setFileType,
         }}
       ></TranslatorOptions>
       <TranslatorTable
-        {...{ source, languages, onLanguageChange, translations }}
+        {...{ source, languages, onSettingChange, translations }}
       ></TranslatorTable>
-      <TranslatorActions {...{ onOpenModal }} />
+      <TranslatorActions {...{ onOpenModal, onExport }} />
+      <textarea 
+        value={output}
+      />
       <TranslatorModal
         {...{ isModal, modalData, setIsModal, onAddTranslation }}
       />
