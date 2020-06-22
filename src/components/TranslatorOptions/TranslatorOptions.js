@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
 const TranslatorOptions = ({
   languages,
   source,
-  setSource,
+  onSourceChange,
+  copySource,
+  onCopySourceChange,
   fileType,
   setFileType,
 }) => {
@@ -46,8 +48,22 @@ const TranslatorOptions = ({
           labelId="translation-src-label"
           id="translation-src"
           value={source}
-          onChange={(e) => setSource(e.target.value)}
+          onChange={(e) => onSourceChange(e.target.value)}
           label="translation source"
+        >
+          {srcOptions}
+        </Select>
+      </FormControl>
+
+
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel id="copy-src-label">copy source</InputLabel>
+        <Select
+          labelId="copy-src-label"
+          id="copy-src"
+          value={copySource}
+          onChange={(e) => onCopySourceChange(e.target.value)}
+          label="copy source"
         >
           {srcOptions}
         </Select>

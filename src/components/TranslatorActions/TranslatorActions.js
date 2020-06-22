@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import Add from "@material-ui/icons/Add";
+import Save from "@material-ui/icons/Save";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TranslatorActions = ({ onOpenModal }) => {
+const TranslatorActions = ({ onOpenModal, onExport }) => {
   const classes = useStyles();
 
   return (
@@ -30,6 +31,15 @@ const TranslatorActions = ({ onOpenModal }) => {
       >
         Add text
         <Add />
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.btn}
+        onClick={onExport}
+      >
+        Export
+        <Save />
       </Button>
     </div>
   );

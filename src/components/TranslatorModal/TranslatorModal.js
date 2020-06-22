@@ -111,8 +111,9 @@ const TranslatorModal = ({
           onChange={onKeyChange}
           fullWidth
         />
-        {translationData.map(({ name, text, key }) => (
+        {translationData.map(({ name, text, key, code }) => (
           <TextField
+            key={`modal-input-${code}`}
             className={classes.input}
             label={name}
             InputLabelProps={{
