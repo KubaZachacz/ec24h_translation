@@ -8,6 +8,7 @@ import {
   TableCell,
 } from "@material-ui/core";
 import TableHead from "./components/TableHead/TableHead";
+import { defaultColumns, defaultLanguages } from "consts/consts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
 }));
+
+const numColumns = defaultColumns.length + defaultLanguages.length;
 
 const TranslatorTable = ({
   source,
@@ -40,8 +43,10 @@ const TranslatorTable = ({
 
   const noData = (
     <TableRow>
-      <TableCell colSpan={3}>
-        <em>No data</em>
+      <TableCell colSpan={numColumns}>
+        <Typography align="center">
+          <em>No data</em>
+        </Typography>
       </TableCell>
     </TableRow>
   );

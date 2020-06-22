@@ -6,11 +6,16 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Typography,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     minWidth: 200,
+  },
+  text: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -33,6 +38,7 @@ const TranslatorOptions = ({
 
   return (
     <div className="TranslatorOptions">
+      <Typography className={classes.text}>General settings</Typography>
       <TextField
         label="File type"
         variant="outlined"
@@ -42,6 +48,7 @@ const TranslatorOptions = ({
         }}
       />
 
+      <Typography className={classes.text}>Translation options</Typography>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="translation-src-label">translation source</InputLabel>
         <Select
@@ -54,7 +61,6 @@ const TranslatorOptions = ({
           {srcOptions}
         </Select>
       </FormControl>
-
 
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="copy-src-label">copy source</InputLabel>

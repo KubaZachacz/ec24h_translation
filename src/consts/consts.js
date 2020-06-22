@@ -15,72 +15,72 @@ export const defaultLanguages = [
     name: "polish",
     code: "pl",
     key: 1,
-    setting: "input"   
+    setting: "input",
   },
   {
     name: "english",
     code: "en",
     key: 9,
-    setting: "auto"   
+    setting: "auto",
   },
   {
     name: "espanol",
     code: "es",
     key: 11,
-    setting: "auto"   
+    setting: "auto",
   },
   {
     name: "french",
     code: "fr",
     key: 12,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "german",
     code: "de",
     key: 10,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "norwegian",
     code: "no",
     key: 14,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "russian",
     code: "ru",
     key: 13,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "swedish",
     code: "sv",
     key: 15,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "czech",
     code: "cs",
     key: 16,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "slovak",
     code: "sk",
     key: 17,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "italian",
     code: "it",
     key: 18,
-    setting: "copy"   
+    setting: "copy",
   },
   {
     name: "hungarian",
-    code: "hus",
+    code: "hu",
     key: 19,
-    setting: "copy"   
+    setting: "copy",
   },
 ];

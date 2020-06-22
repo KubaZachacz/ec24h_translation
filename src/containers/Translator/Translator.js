@@ -14,7 +14,13 @@ import TranslatorOptions from "components/TranslatorOptions/TranslatorOptions";
 import TranslatorActions from "components/TranslatorActions/TranslatorActions";
 import TranslatorModal from "components/TranslatorModal/TranslatorModal";
 import { translate } from "utils/translate";
-import { formatQuery } from "utils/formatQuery";
+import {
+  formatInsertQuery,
+  formatDeleteQuery,
+  returnQueryBlock,
+  returnFunction,
+} from "utils/formatters";
+import TranslatorOutput from "components/TranslatorOutput/TranslatorOutput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,19 +100,18 @@ const Translator = (props) => {
 
     const pendingTranslationData = languages.map(async (lang) => {
       const langModalData = modalTranslationData.find((item) => {
-
         return item.key === lang.key;
       });
 
       let text = "";
       if (!!langModalData) {
         text = langModalData.text;
-      } else if (lang.setting === "auto"){
+      } else if (lang.setting === "auto") {
         text = await translate(srcText, source, lang.code);
-      } else if (lang.setting === "copy"){
+      } else if (lang.setting === "copy") {
         text = "--copy-text--";
       }
-      
+
       return {
         ...lang,
         text,
@@ -115,18 +120,20 @@ const Translator = (props) => {
 
     const rawTranslationData = await Promise.all(pendingTranslationData);
 
-    const copySourceTxt = rawTranslationData.find(({code}) => code === copySource).text;
-    
-    const translationData = rawTranslationData.map(lang => {
-      let {text} = lang;
-      if(text === "--copy-text--") {
+    const copySourceTxt = rawTranslationData.find(
+      ({ code }) => code === copySource
+    ).text;
+
+    const translationData = rawTranslationData.map((lang) => {
+      let { text } = lang;
+      if (text === "--copy-text--") {
         text = copySourceTxt;
       }
-      return ({
+      return {
         ...lang,
-        text
-      })
-    })
+        text,
+      };
+    });
 
     setTranslations([
       ...translations,
@@ -140,16 +147,52 @@ const Translator = (props) => {
   const onEditTranslation = () => {};
 
   const onExport = () => {
-    let output = ""
+    let upBlocks = [];
+    let downBlocks = [];
+    let insertedKeys = [];
+    let updatedKeys = [];
+
+    let output = "";
+
     for (let trans of translations) {
-      const {action, key, translationData} = trans;
-      for (let lang of translationData) {
-        output = output + "\n" + formatQuery(action, lang.key, lang.name, fileType, key, lang.text);
+      const { action, key, translationData } = trans;
+
+      let transUpQueries = [];
+      // let transDownQueries = "";
+
+      if (action === "INSERT") {
+        insertedKeys.push(key);
+
+        for (let lang of translationData) {
+          let newQuery = "";
+          newQuery = formatInsertQuery(
+            lang.key,
+            lang.name,
+            fileType,
+            key,
+            lang.text
+          );
+
+          transUpQueries.push(newQuery);
+        }
+
+        upBlocks.push(returnQueryBlock(transUpQueries));
       }
     }
 
+    const deleteInsertedBlock = returnQueryBlock([
+      formatDeleteQuery(insertedKeys),
+    ]);
+
+    downBlocks.push(deleteInsertedBlock);
+
+    output =
+      returnFunction("up", upBlocks) +
+      "\n" +
+      returnFunction("down", downBlocks);
+
     setOutput(output);
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -168,9 +211,7 @@ const Translator = (props) => {
         {...{ source, languages, onSettingChange, translations }}
       ></TranslatorTable>
       <TranslatorActions {...{ onOpenModal, onExport }} />
-      <textarea 
-        value={output}
-      />
+      {output && <TranslatorOutput {...{ output }} />}
       <TranslatorModal
         {...{ isModal, modalData, setIsModal, onAddTranslation }}
       />

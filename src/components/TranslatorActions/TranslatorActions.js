@@ -7,11 +7,11 @@ import Save from "@material-ui/icons/Save";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   btn: {
     display: "block",
-    margin: "8px auto",
+    margin: theme.spacing(2),
     "& svg": {
       verticalAlign: "middle",
     },
@@ -33,7 +33,7 @@ const TranslatorActions = ({ onOpenModal, onExport }) => {
         <Add />
       </Button>
       <Button
-        variant="contained"
+        variant="outlined"
         color="primary"
         className={classes.btn}
         onClick={onExport}
