@@ -32,6 +32,7 @@ const defaultModalData = {
   action: defaultActions[0],
   key: "",
   translationData: [],
+  originalData: []
 };
 
 const Translator = (props) => {
@@ -83,9 +84,17 @@ const Translator = (props) => {
       };
     });
 
+    const originalData = languages.map((lang) => {
+      return {
+        ...lang,
+        text: "",
+      };
+    });
+
     const newModalData = {
       ...defaultModalData,
       translationData,
+      originalData,
     };
 
     setModalData(newModalData);
@@ -158,14 +167,13 @@ const Translator = (props) => {
       const { action, key, translationData } = trans;
 
       let transUpQueries = [];
-      // let transDownQueries = "";
+      let transDownQueries = "";
 
       if (action === "INSERT") {
         insertedKeys.push(key);
 
         for (let lang of translationData) {
-          let newQuery = "";
-          newQuery = formatInsertQuery(
+          let newQuery = formatInsertQuery(
             lang.key,
             lang.name,
             fileType,
@@ -178,6 +186,25 @@ const Translator = (props) => {
 
         upBlocks.push(returnQueryBlock(transUpQueries));
       }
+      // else if (action === "UPDATE") {
+      //   translationData
+      //   for (let lang of translationData) {
+
+
+
+      //     let newQuery = formatInsertQuery(
+      //       lang.key,
+      //       lang.name,
+      //       fileType,
+      //       key,
+      //       lang.text
+      //     );
+
+      //     transUpQueries.push(newQuery);
+      //   }
+
+      //   upBlocks.push(returnQueryBlock(transUpQueries));
+      // }
     }
 
     const deleteInsertedBlock = returnQueryBlock([

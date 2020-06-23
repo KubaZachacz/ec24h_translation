@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     overflow: "auto",
   },
+  cellCol: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  prevText: {
+    color: 'grey',
+  }
 }));
 
 const numColumns = defaultColumns.length + defaultLanguages.length;
@@ -30,13 +37,25 @@ const TranslatorTable = ({
   console.log(translations);
 
   const translationsRows = translations.map(
-    ({ action, key, translationData }) => (
+    ({ action, key, translationData, originalData }) => (
       <TableRow key={`row-${key}`}>
         <TableCell>{action}</TableCell>
         <TableCell>{key}</TableCell>
-        {translationData.map(({ text, code }) => (
-          <TableCell key={`${key}-${code}`}>{text}</TableCell>
-        ))}
+        {translationData.map(({ text, code }, index) => {
+          let cell = <TableCell key={`${key}-${code}`}>{text}</TableCell>;
+          if (originalData.length > 0) {
+            const prevText = originalData[index].text;
+            cell = (
+              <TableCell key={`${key}-${code}`}>
+                <div className={classes.cellCol}>
+                  <div>{text}</div>
+                  <div className={classes.prevText}>{prevText}</div>
+                </div>
+              </TableCell>
+            );
+          }
+          return cell;
+        })}
       </TableRow>
     )
   );

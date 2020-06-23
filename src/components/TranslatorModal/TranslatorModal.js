@@ -12,8 +12,10 @@ import {
   Select,
   MenuItem,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import { defaultActions } from "consts/consts";
+import ReactFileReader from "react-file-reader";
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -34,12 +36,32 @@ const TranslatorModal = ({
   };
 
   const [state, setState] = useState(modalData);
+  const [loadedData, setLoadedData] = useState([]);
 
   useEffect(() => {
     setState(modalData);
   }, [modalData]);
 
-  const { action, key, translationData } = state;
+  useEffect(() => {
+    if (loadedData.length > 0) {
+      const newOriginalData = state.originalData.map((lang) => {
+        const loadedItem = loadedData.find(
+          (item) => item.language_id == lang.key
+        )
+        console.log(loadedItem)
+        const loadedText = loadedItem?.languages_translations_value;
+
+        return {
+          ...lang,
+          text: loadedText,
+        };
+      });
+      setState({ ...state, originalData: newOriginalData });
+      console.log('set', newOriginalData)
+    }
+  }, [loadedData]);
+
+  const { action, key, translationData, originalData } = state;
 
   const onActionChange = (e) => {
     setState({ ...state, action: e.target.value });
@@ -49,23 +71,41 @@ const TranslatorModal = ({
     setState({ ...state, key: e.target.value });
   };
 
-  const onLangChange = (e, key) => {
-    const newTranslationData = [...translationData];
-    const langId = translationData.findIndex((el) => el.key === key);
+  const onLangChange = (e, property, key) => {
+    const newData = [...state[property]];
+    const langId = newData.findIndex((el) => el.key === key);
 
-    newTranslationData[langId] = {
-      ...translationData[langId],
+    newData[langId] = {
+      ...newData[langId],
       text: e.target.value,
     };
 
     setState({
       ...state,
-      translationData: newTranslationData,
+      [property]: newData,
     });
   };
 
   const handleSave = () => {
     onAddTranslation(state);
+  };
+
+  const handleFiles = async (files) => {
+    const file = files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      function () {
+        const allLoadedTableData = JSON.parse(reader.result);
+        setLoadedData(allLoadedTableData[2]?.data);
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsText(file);
+    }
   };
 
   return (
@@ -80,7 +120,6 @@ const TranslatorModal = ({
         Fill the translation data
       </DialogTitle>
       <DialogContent>
-        {/* <DialogContentText id="alert-dialog-description">XD</DialogContentText> */}
         <FormControl variant="outlined" className={classes.input} fullWidth>
           <InputLabel id="query-action-type-label">
             translation source
@@ -111,6 +150,31 @@ const TranslatorModal = ({
           onChange={onKeyChange}
           fullWidth
         />
+        {state.action === "UPDATE" && (
+          <>
+            <Typography>Original values</Typography>
+            {/* <input type="file" id="input" /> */}
+            <ReactFileReader fileTypes={[".json"]} handleFiles={handleFiles}>
+              <button className="btn">Upload</button>
+            </ReactFileReader>
+            {originalData.map(({ name, text, key, code }) => (
+              <TextField
+                key={`modal-input-${code}`}
+                className={classes.input}
+                label={name}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                placeholder={`Type ${name} text`}
+                variant="outlined"
+                value={text}
+                onChange={(e) => onLangChange(e, "originalData", key)}
+                fullWidth
+              />
+            ))}
+            <Typography>Updated values</Typography>
+          </>
+        )}
         {translationData.map(({ name, text, key, code }) => (
           <TextField
             key={`modal-input-${code}`}
@@ -122,7 +186,7 @@ const TranslatorModal = ({
             placeholder={`Type ${name} text`}
             variant="outlined"
             value={text}
-            onChange={(e) => onLangChange(e, key)}
+            onChange={(e) => onLangChange(e, "translationData", key)}
             fullWidth
           />
         ))}
