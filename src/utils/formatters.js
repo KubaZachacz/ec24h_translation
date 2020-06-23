@@ -10,16 +10,17 @@ export const formatInsertQuery = (
   return query;
 };
 
-// export const formatUpdateQuery = (
-//   languageId,
-//   languageName,
-//   fileType,
-//   translationKey,
-//   translationValue
-// ) => {
-//   let query = `UPDATE languages_translations SET languages_translations_oryginal_value = '${translationValue}', languages_translations_value = '${translationValue}' WHERE languages_translations_key = '${translationKey}' AND languages_translations_file = '${languageName}${fileType}' AND  LIMIT 1;`;
-//   return query;
-// };
+export const formatUpdateQuery = (
+  languageId,
+  languageName,
+  fileType,
+  translationKey,
+  translationValue
+) => {
+  let query = `UPDATE languages_translations SET languages_translations_oryginal_value = '${translationValue}', languages_translations_value = '${translationValue}' WHERE languages_translations_key = '${translationKey}' AND language_id = '${languageId}' AND LIMIT 1;`;
+
+  return query;
+};
 
 export const formatDeleteQuery = (keys) => {
   const formattedKeys = keys.map((key) => `'${key}'`).join(",");

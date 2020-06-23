@@ -19,6 +19,7 @@ import {
   formatDeleteQuery,
   returnQueryBlock,
   returnFunction,
+  formatUpdateQuery,
 } from "utils/formatters";
 import TranslatorOutput from "components/TranslatorOutput/TranslatorOutput";
 
@@ -32,7 +33,7 @@ const defaultModalData = {
   action: defaultActions[0],
   key: "",
   translationData: [],
-  originalData: []
+  originalData: [],
 };
 
 const Translator = (props) => {
@@ -164,16 +165,16 @@ const Translator = (props) => {
     let output = "";
 
     for (let trans of translations) {
-      const { action, key, translationData } = trans;
+      const { action, key, translationData, originalData } = trans;
 
       let transUpQueries = [];
-      let transDownQueries = "";
+      let transDownQueries = [];
 
       if (action === "INSERT") {
         insertedKeys.push(key);
 
         for (let lang of translationData) {
-          let newQuery = formatInsertQuery(
+          const newQuery = formatInsertQuery(
             lang.key,
             lang.name,
             fileType,
@@ -185,26 +186,35 @@ const Translator = (props) => {
         }
 
         upBlocks.push(returnQueryBlock(transUpQueries));
+      } else if (action === "UPDATE") {
+        translationData.forEach((lang, index) => {
+          const originalLang = originalData[index];
+
+          if (originalLang.text && lang.text !== originalLang.text) {
+            const newUpQuery = formatUpdateQuery(
+              lang.key,
+              lang.name,
+              fileType,
+              key,
+              lang.text
+            );
+
+            const newDownQuery = formatUpdateQuery(
+              originalLang.key,
+              originalLang.name,
+              fileType,
+              key,
+              originalLang.text
+            );
+
+            transUpQueries.push(newUpQuery);
+            transDownQueries.push(newDownQuery);
+          }
+        });
+
+        upBlocks.push(returnQueryBlock(transUpQueries));
+        downBlocks.push(returnQueryBlock(transDownQueries));
       }
-      // else if (action === "UPDATE") {
-      //   translationData
-      //   for (let lang of translationData) {
-
-
-
-      //     let newQuery = formatInsertQuery(
-      //       lang.key,
-      //       lang.name,
-      //       fileType,
-      //       key,
-      //       lang.text
-      //     );
-
-      //     transUpQueries.push(newQuery);
-      //   }
-
-      //   upBlocks.push(returnQueryBlock(transUpQueries));
-      // }
     }
 
     const deleteInsertedBlock = returnQueryBlock([
