@@ -21,13 +21,13 @@ export const defaultLanguages = [
     name: "english",
     code: "en",
     key: 9,
-    setting: "auto",
+    setting: "input",
   },
   {
     name: "espanol",
     code: "es",
     key: 11,
-    setting: "auto",
+    setting: "copy",
   },
   {
     name: "french",

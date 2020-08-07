@@ -29,6 +29,13 @@ const TranslatorOutput = ({ output }) => {
           <FileCopy fontSize="small" />
         </Fab>
       </div>
+      <div>
+        <Typography>Run <code>docker-compose exec web bash</code></Typography>
+        <Typography>Go to <code>/lib/tools</code></Typography>
+        <Typography>Run <code>php vendor/bin/phinx create {"<MigrationName>"}</code></Typography>
+        <Typography>Paste commands into created file</Typography>
+        <Typography>Run <code>php vendor/bin/phinx migrate</code></Typography>
+      </div>
       <TextareaAutosize
         value={output}
         rowsMin={3}
