@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/ec24h_translation/static/css/main.27fd15f6.chunk.css",
+    "main.js": "/ec24h_translation/static/js/main.2d59c67c.chunk.js",
+    "main.js.map": "/ec24h_translation/static/js/main.2d59c67c.chunk.js.map",
+    "runtime-main.js": "/ec24h_translation/static/js/runtime-main.d103b7ba.js",
+    "runtime-main.js.map": "/ec24h_translation/static/js/runtime-main.d103b7ba.js.map",
+    "static/css/2.e189fde9.chunk.css": "/ec24h_translation/static/css/2.e189fde9.chunk.css",
+    "static/js/2.b2b1f177.chunk.js": "/ec24h_translation/static/js/2.b2b1f177.chunk.js",
+    "static/js/2.b2b1f177.chunk.js.map": "/ec24h_translation/static/js/2.b2b1f177.chunk.js.map",
+    "index.html": "/ec24h_translation/index.html",
+    "precache-manifest.c2108185edf4ad7f6c6dacd690f8f613.js": "/ec24h_translation/precache-manifest.c2108185edf4ad7f6c6dacd690f8f613.js",
+    "service-worker.js": "/ec24h_translation/service-worker.js",
+    "static/css/2.e189fde9.chunk.css.map": "/ec24h_translation/static/css/2.e189fde9.chunk.css.map",
+    "static/css/main.27fd15f6.chunk.css.map": "/ec24h_translation/static/css/main.27fd15f6.chunk.css.map",
+    "static/js/2.b2b1f177.chunk.js.LICENSE.txt": "/ec24h_translation/static/js/2.b2b1f177.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/ec24h_translation/static/media/roboto-latin-900-normal.bb1e4dc6.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d103b7ba.js",
+    "static/css/2.e189fde9.chunk.css",
+    "static/js/2.b2b1f177.chunk.js",
+    "static/css/main.27fd15f6.chunk.css",
+    "static/js/main.2d59c67c.chunk.js"
+  ]
+}
