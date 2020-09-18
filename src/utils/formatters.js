@@ -1,3 +1,9 @@
+function escapeHtml(string) {
+  return string
+       .replace(/"/g, String.raw`\"`)
+       .replace(/'/g, String.raw`\'`);
+}
+
 export const formatInsertQuery = (
   languageId,
   languageName,
@@ -5,7 +11,8 @@ export const formatInsertQuery = (
   translationKey,
   translationValue
 ) => {
-  let query = `INSERT INTO languages_translations (language_id, languages_translations_file, languages_translations_key, languages_translations_value, languages_translations_oryginal_value, languages_translations_strtr_keys) VALUES ('${languageId}', '${languageName}${fileType}', '${translationKey}', '${translationValue}', '${translationValue}', '${translationKey}');`;
+  const escapedValue = escapeHtml(translationValue);
+  let query = `INSERT INTO languages_translations (language_id, languages_translations_file, languages_translations_key, languages_translations_value, languages_translations_oryginal_value, languages_translations_strtr_keys) VALUES ('${languageId}', '${languageName}${fileType}', '${translationKey}', '${escapedValue}', '${escapedValue}', '${translationKey}');`;
 
   return query;
 };
@@ -17,7 +24,8 @@ export const formatUpdateQuery = (
   translationKey,
   translationValue
 ) => {
-  let query = `UPDATE languages_translations SET languages_translations_oryginal_value = '${translationValue}', languages_translations_value = '${translationValue}' WHERE languages_translations_key = '${translationKey}' AND language_id = '${languageId}';`;
+  const escapedValue = escapeHtml(translationValue);
+  let query = `UPDATE languages_translations SET languages_translations_oryginal_value = '${escapedValue}', languages_translations_value = '${escapedValue}' WHERE languages_translations_key = '${translationKey}' AND language_id = '${languageId}';`;
 
   return query;
 };
